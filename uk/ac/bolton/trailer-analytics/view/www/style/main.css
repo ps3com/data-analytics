@@ -1,0 +1,61 @@
+.but-pad-bot{
+	margin-bottom:10px;
+}
+
+.wfix{
+	
+	margin: 4px;
+	height:100%;
+}
+
+.simple-l{
+	bg-color:#fafafa
+}
+
+.item-warning{
+	font-weight: bold;
+	color:#FF6600;
+}
+
+.item-error{
+	font-weight: bold;
+	color:#FF0000;
+}
+
+.search-description{
+	font-style: italic;
+	font-variant: small-caps;
+}
+
+.legend-name{
+	font-weight: bold;	
+}
+
+/** collapse table css **/
+ 	div.trigger {
+		margin: 6px 6px;		
+		height: 12px;
+		width: 12px;
+		float:left;
+	}		
+	.name{
+		float:left;
+		font-size:15px;
+	}	
+	.toggle_container {
+		margin: 0 0 5px;
+		padding: 0;
+		overflow: hidden;
+		clear: both;
+	}
+	.toggle_container .block {
+		padding: 20px; 	
+		clear:both;
+	}
+	
+	.jactive{
+		background: url(../images/switch_minus.gif) no-repeat;
+	}
+	.jinactive{
+		background: url(../images/switch_plus.gif) no-repeat;
+	}
