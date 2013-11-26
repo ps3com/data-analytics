@@ -1,0 +1,7 @@
+library(shiny)
+library(RJSONIO)
+library(RMySQL)
+library(XML)
+library(RCurl)
+options(RCurlOptions = list(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl")))
+require(mallet)
