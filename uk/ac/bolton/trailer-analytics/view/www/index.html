@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title id="pTitle" class="shiny-text-output"></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <script src="shared/jquery.js" type="text/javascript"></script>
+  <script src="shared/shiny.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="shared/shiny.css"/>
+  <link rel="stylesheet" type="text/css" href="shared/slider/css/jquery.slider.min.css"/>
+  <script src="shared/slider/js/jquery.slider.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="shared/bootstrap/css/bootstrap.min.css"/>
+  <script src="shared/bootstrap/js/bootstrap.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" type="text/css" href="shared/bootstrap/css/bootstrap-responsive.min.css"/>
+  <script src="script/shinyinterceptor.js" type="text/javascript"></script>
+  <script src="script/functions.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="style/main.css"/>
+</head>
+<body>
+<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;background:#f0f0f0;">
+  <div  style="position: absolute; top: 0; left: 0; width: 50% ; bottom: 0; overflow: auto">
+    <div class="wfix" >          
+	  <div id="usersControl" class="shiny-html-output"></div>
+      <div style="float: right;" id="chosenUserText" class="shiny-text-output"></div>      
+      <div style="clear: left;" id="bookmarkDataset" class="bookmarkDataset-output"></div>
+      <button onclick="wait('bookmarkTermsLegend')" style="float: left;" id="goBookmarkTopics" type="button" class="btn action-button but-pad-bot">Get topics</button>
+      <div id="bookmarkTermsLegend" style="float: left;margin-left:20px;" class="shiny-text-output"></div>
+      <div style="clear: left;" id="bookmarkTermsDataset" class="bookmarkTermsDataset-output"></div>
+    </div>
+  </div>
+  <div style="position: absolute; top: 0; left: 50% ; right: 0; bottom: 0; overflow: auto">
+    <div  class="wfix" >
+      <label for="searchTerms">Enter a term that describes your bookmarks?</label>
+      <input style="float:left;" id="searchTerms" type="text" value=""/>
+      <button id="goSearch" type="button" style="float: left;" class="btn action-button">Search</button>
+      <div style="clear: left" id="searchResultDataset" class="searchResultDataset-output"></div>
+      <button onclick="wait('searchTermsLegend')" style="visibility:hidden;float: left;" id="goSearchTopics" type="button" class="btn action-button but-pad-bot">Get topics</button>
+      <div id="searchTermsLegend" style="float: left;margin-left:20px;" class="shiny-text-output"></div>
+      <div style="clear: left;" id="searchTermsDataset" class="searchTermsDataset-output"></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
