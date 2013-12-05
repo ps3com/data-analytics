@@ -4,6 +4,10 @@
 ###############################################################################
 topicHandler = new.env()
 topicHandler$labels <- NULL
+topicHandler$words <- NULL
+topicHandler$topic_docs <- NULL
+topicHandler$documents <- NULL
+topicHandler$df3m <- NULL
 
 topicHandler$parse <- function(scraps){
 	#documents <- data.frame(text = bookmarksController$text[,1],
@@ -17,7 +21,8 @@ topicHandler$parse <- function(scraps){
 			class = scraps$text, 
 			stringsAsFactors=FALSE)
 	
-	mallet.instances <- mallet.import(documents$id, documents$text, "D:/mallet-2.0.7/stoplists/en.txt", token.regexp = "\\p{L}[\\p{L}\\p{P}]+\\p{L}")
+	#mallet.instances <- mallet.import(documents$id, documents$text, "D:/mallet-2.0.7/stoplists/en.txt", token.regexp = "\\p{L}[\\p{L}\\p{P}]+\\p{L}")
+	mallet.instances <- mallet.import(documents$id, documents$text, "en.txt", token.regexp = "\\p{L}[\\p{L}\\p{P}]+\\p{L}")
 	
 	## Create a topic trainer object.
 	n.topics <- 30
@@ -59,13 +64,15 @@ topicHandler$parse <- function(scraps){
 	topics.labels <- rep("", n.topics)
 	for (topic in 1:n.topics) topics.labels[topic] <- paste(mallet.top.words(topic.model, topic.words[topic,], num.top.words=5)$words, collapse=" ")
 	# have a look at keywords for each topic
-	topics.labels
-	
 	
 	
 	# create data.frame with columns as authors and rows as topics
-	topic_docs <- data.frame(topic.docs)
-	names(topic_docs) <- documents$id
+	topicHandler$topic_docs <- data.frame(topic.docs)
+	names(topicHandler$topic_docs) <- documents$id
 	
+	topicHandler$documents <- documents
 	topicHandler$labels <- topics.labels
+	topicHandler$words <- topic.words
+	
+	return (topics.labels)
 }
