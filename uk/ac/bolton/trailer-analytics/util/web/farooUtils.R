@@ -13,10 +13,12 @@ farooUtils$src <- "web"
 
 farooUtils$searchJSON = function(searchTerm){	
 	# escape url terms
-	data <- getURL( paste(farooUtils$apiURL, "key=", properties$farooAPIKey,
-					"&start=", farooUtils$start, "&length=", farooUtils$length,
-					"&src=", farooUtils$src, "&f=json",
-					"&q=", searchTerm, sep = ""), cainfo = "cacert.pem")
+	st <- paste(farooUtils$apiURL, "key=", properties$farooAPIKey,
+			"&start=", farooUtils$start, "&length=", farooUtils$length,
+			"&src=", farooUtils$src, "&f=json",
+			"&q=", searchTerm, sep = "")
+	#cat(paste(st, "\n", sep=""))
+	data <- getURL(st , cainfo = "cacert.pem")
 	#jsonList <- fromJSON( data, method='C')
 	jsonList <- fromJSON( data, simplify=FALSE)
 	# keep hold of this in case we need to search again
