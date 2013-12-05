@@ -1,25 +1,3 @@
-/* 	
-$(document).ready(function(){
-		//Hide (Collapse) the toggle containers on load
-		$(".toggle_container").hide(); 
-		$("div.trigger").addClass("jinactive");
-		
-		//Switch the "Open" and "Close" state per click
-		$("div.trigger").toggle(function(){
-			$(this).addClass("jactive");
-			$(this).removeClass("jinactive");
-			}, function () {
-			$(this).addClass("jinactive");
-			$(this).removeClass("jactive");
-		});
-	
-		//Slide up and down on click
-		$("div.trigger").click(function(){
-			$(this).next().next(".toggle_container").slideToggle("slow");
-		});
-	});
- */	
-
 initCollapseTables = function(viewId){
 		//Hide (Collapse) the toggle containers on load
 		$("div#toggle_container"+viewId).show(); 
@@ -54,6 +32,22 @@ getCollapseCode = function(label, html, viewId){
 		return markup;
  	}
 
-function wait(tDiv){
-	$('#'+tDiv).html("Searching, please wait");
+wait = function (tDiv){
+	$('#'+tDiv).html("Searching, please wait...");
+	if(tDiv=="searchLegend"){
+		$('.searchTermsDataset-output').css('visibility','hidden');
+		$('#searchvisuals').css('visibility','hidden');
+	}
 }
+
+updateSearchTerms = function(terms){
+	document.getElementById('searchTerms').value = terms;
+	$("#searchTerms").trigger("change");
+	$('#goSearch').trigger( "click" );
+}
+
+$(function() {
+	initCollapseTables("_wordcloud_bookmark");
+	initCollapseTables("_wordcloud_search");
+});
+

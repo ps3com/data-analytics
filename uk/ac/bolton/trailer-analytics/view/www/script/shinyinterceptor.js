@@ -1,3 +1,5 @@
+var isfirst = true;
+
 /*
 var tableInputBinding = new Shiny.InputBinding();
   $.extend(tableInputBinding, {
@@ -70,13 +72,13 @@ var bookmarksOutputBinding = new Shiny.OutputBinding();
     	} 
     	
     	var bookmarks = jQuery.parseJSON(data);
-    	console.log("1")
-    	console.log(bookmarks)
-    	console.log("2")
+    	
+    	//console.log(bookmarks)
+    	
     	$.each(bookmarks, function() {
     		$desc = "";
     		$url = "";
-    		console.log("\nthis[0]="+this[0] + "\nthis=" +this+"\nthis[1]="+this[1]);
+    		//console.log("\nthis[0]="+this[0] + "\nthis=" +this+"\nthis[1]="+this[1]);
        		if(this[0]==""){
     			$url =  '<div class="item-error">' + "No URL set in data" + '</div>'; 
     		}else{
@@ -100,6 +102,7 @@ var bookmarksOutputBinding = new Shiny.OutputBinding();
     	
     	$(el).html(m);
     	initCollapseTables("bookmarkDataset-output");
+    	$('#bookmarkvisuals').css('visibility','hidden');
     }
   });
 
@@ -113,19 +116,35 @@ $.extend(bookmarkTermsOutputBinding, {
   },
   renderValue: function(el, data) {
 
+  		//if ((data.split("[").length - 1) == 1){
+  			//data = "[" + data + "]"
+  		//}
+	  //console.log("raw: "+data)
 	  	var bookmarks = jQuery.parseJSON(data);
 	  	if(bookmarks.length == 0){
 	  		return;
 	  	}
-
+	  	if(bookmarks[0].length == 0){
+	  		return;
+	  	}
 	  	var text = '<table class="data table table-bordered table-condensed">';
 	  	text +='<tbody>';
 	  	$.each(bookmarks, function() {
 	  		$topics = "";
-	  		$topics = this;
+	  		//console.log("@@"+this);
+	  		// JSON function in R sometimes wraps each string in its own array - test for this
+	  		try{
+	  			$topics = this.replace(/[\"\']/g,"");
+	  		}catch(err){
+	  			console.log("problem applying regex - trying next index");
+	  			$topics = this[0].replace(/[\"\']/g,"");
+	  		}
+	  		//$topics = this;
 	  		text +=  '<tr>';
 	  		text += '	<td>';
+	  		text += '	<a href="#" onclick="updateSearchTerms(\''+ $topics +'\')">';
 	  		text += $topics;
+	  		text += '	</a>';
 	  	    text += '	</td>';
 	  		text += '</tr>';
 	  		
@@ -136,7 +155,12 @@ $.extend(bookmarkTermsOutputBinding, {
 		$(el).html(m);
 		$('#bookmarkTermsLegend').html("");
 		initCollapseTables("bookmarkTermsDataset-output");
+		if(isfirst){
+			//initCollapseTables("_wordcloud_bookmark");
+			isfirst = false;
+		}
 		$('.bookmarkTermsDataset-output').css('visibility','visible');
+		$('#bookmarkvisuals').css('visibility','visible');
 	  }
 });
 
@@ -148,7 +172,7 @@ $.extend(searchResultsOutputBinding, {
     return scope.find('.searchResultDataset-output');
   },
   renderValue: function(el, data) {
-
+	//console.log("**********  search results callback");
   	var bookmarks = jQuery.parseJSON(data);
   	if(bookmarks.length == 0){
   		return;
@@ -188,7 +212,7 @@ $.extend(searchResultsOutputBinding, {
       });
   	text += '</table>';
    	var m = getCollapseCode("Search Results", text, "searchResultDataset-output");
-	
+   	$('#searchLegend').html("");
 	$(el).html(m);
 	initCollapseTables("searchResultDataset-output");
 	$('#goSearchTopics').css('visibility','visible');
@@ -214,10 +238,13 @@ $.extend(searchTermsOutputBinding, {
 	  	text +='<tbody>';
 	  	$.each(bookmarks, function() {
 	  		$topics = "";
-	  		$topics = this;
+	  		$topics = this.replace(/[\"\']/g,"");
+	  		//$topics = this;
 	  		text +=  '<tr>';
 	  		text += '	<td>';
+	  		text += '	<a href="#" onclick="updateSearchTerms(\''+ $topics +'\')">';
 	  		text += $topics;
+	  		text += '	</a>';
 	  	    text += '	</td>';
 	  		text += '</tr>';
 	  		
@@ -228,6 +255,7 @@ $.extend(searchTermsOutputBinding, {
 		$(el).html(m);
 		initCollapseTables("searchTermsDataset-output");
 		$('.searchTermsDataset-output').css('visibility','visible');
+		$('#searchvisuals').css('visibility','visible');
 	  }
 });
 
