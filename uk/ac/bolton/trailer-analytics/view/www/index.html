@@ -26,17 +26,44 @@
       <button onclick="wait('bookmarkTermsLegend')" style="float: left;" id="goBookmarkTopics" type="button" class="btn action-button but-pad-bot">Get topics</button>
       <div id="bookmarkTermsLegend" style="float: left;margin-left:20px;" class="shiny-text-output"></div>
       <div style="clear: left;" id="bookmarkTermsDataset" class="bookmarkTermsDataset-output"></div>
+      
+      <div id="bookmarkvisuals" style="visibility:hidden;">
+      <div class="data table table-bordered table-condensed">
+		<div id="trigger_wordcloud_bookmark" class="trigger jactive"></div>
+		<div class="legend-name">Visuals</div>
+		<div id="toggle_container_wordcloud_bookmark" class="toggle_container">
+			<div class="block">
+				<div id="bookmarkPlot" class="shiny-plot-output" style="width: 100% ; height: 400px;"></div>
+			</div>
+		</div>
+	  </div>
+      </div>
+      
     </div>
   </div>
   <div style="position: absolute; top: 0; left: 50% ; right: 0; bottom: 0; overflow: auto">
     <div  class="wfix" >
-      <label for="searchTerms">Enter a term that describes your bookmarks?</label>
+      <label for="searchTerms">Enter your search terms</label>
       <input style="float:left;" id="searchTerms" type="text" value=""/>
-      <button id="goSearch" type="button" style="float: left;" class="btn action-button">Search</button>
+      <button onclick="wait('searchLegend')" id="goSearch" type="button" style="float: left;" class="btn action-button">Search</button>
+      <div id="searchLegend" style="float: left;margin-left:20px;" class="shiny-text-output"></div>
       <div style="clear: left" id="searchResultDataset" class="searchResultDataset-output"></div>
       <button onclick="wait('searchTermsLegend')" style="visibility:hidden;float: left;" id="goSearchTopics" type="button" class="btn action-button but-pad-bot">Get topics</button>
       <div id="searchTermsLegend" style="float: left;margin-left:20px;" class="shiny-text-output"></div>
       <div style="clear: left;" id="searchTermsDataset" class="searchTermsDataset-output"></div>
+      
+      <div id="searchvisuals" style="visibility:hidden;">
+      <div class="data table table-bordered table-condensed">
+		<div id="trigger_wordcloud_search" class="trigger jactive"></div>
+		<div class="legend-name">Visuals</div>
+		<div id="toggle_container_wordcloud_search" class="toggle_container">
+			<div class="block">
+				<div id="searchPlot" class="shiny-plot-output" style="width: 100% ; height: 400px;"></div>
+			</div>
+		</div>
+	  </div>
+      </div>
+      
     </div>
   </div>
 </div>
