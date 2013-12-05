@@ -50,16 +50,14 @@ shinyServer(function(input, output) {
 						if (input$goSearch == 0)
 							return(NULL)
 						isolate({
-									
+									#cat(paste("<",input$searchTerms,">\n",sep=""))
 									# todo url encode values in controller
-									return (webSearchController$searchJSON(input$searchTerms))								
+									return (webSearchController$searchJSON(input$searchTerms))									
 								})
 					})
 			
 			output$searchResultDataset <- renderUI({
-						#dataSet2 <- gen.Results()
-						
-						#
+						#cat(paste("*",input$searchTerms,"*\n",sep=""))
 						dataSet2 <- getSearchResults()
 						dataSet2 <- suppressWarnings(as.data.frame(sapply(dataSet2, as.character)))
 						toJSON(as.data.frame(t(dataSet2)), .withNames=FALSE)
@@ -75,11 +73,15 @@ shinyServer(function(input, output) {
 			scrapeBookmarks <- reactive({
 						if (input$goBookmarkTopics == 0)
 							return(NULL)
-						isolate({					
-									# todo url encode values in controller
-									return (bookmarksController$getTopics())								
-								})
-					})
+						isolate({	
+							output$bookmarkPlot <- renderPlot({
+								#wordcloud(topicHandler$labels, scale=c(5,0.5), max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
+								#wordcloud(topicHandler$labels, scale=c(8,.2),min.freq=1, max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
+								wordcloud(bookmarksController$getLabels(), scale=c(3,.2), min.freq=1, max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
+							})										
+						return (bookmarksController$getTopics())								
+						})
+			})
 			
 			output$bookmarkTermsDataset <- renderUI({
 						#if (input$goBookmarkTopics != 0)
@@ -102,7 +104,9 @@ shinyServer(function(input, output) {
 						if (input$goSearchTopics == 0)
 							return(NULL)
 						isolate({
-									# todo url encode values in controller
+									output$searchPlot <- renderPlot({
+												wordcloud(webSearchController$getLabels(), scale=c(3,.2), min.freq=1, max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
+											})	
 									return (webSearchController$getTopics())								
 								})
 					})
@@ -113,6 +117,13 @@ shinyServer(function(input, output) {
 						toJSON(as.data.frame(t(dataSet2)), .withNames=FALSE, container = TRUE)
 					})			
 			
-		})
+		
 
+			#output$bookmarkPlot <- renderPlot({
+		#		wordcloud(topicHandler$labels, scale=c(5,0.5), max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
+		#	})
 #############################################################################################
+
+
+
+})
