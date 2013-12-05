@@ -28,7 +28,7 @@ HTMLScraper$parse <- function(){
 	# remove links, etc
 	textList <- as.data.frame(lapply(textList, function(d){gsub("https?://[[:alnum:][:punct:]]+", "", d)}), stringsAsFactors=FALSE)
 	# remove punctuation
-	textList <- as.data.frame(lapply(textList, function(d){gsub("[,()/.!?\"]", "", d)}), stringsAsFactors=FALSE)
+	textList <- as.data.frame(lapply(textList, function(d){gsub("[,()/.:;'!?\"]", "", d)}), stringsAsFactors=FALSE)
 	# remove \n
 	textList <- as.data.frame(lapply(textList, function(d){gsub("\n", "", d)}), stringsAsFactors=FALSE)
 	# remove \r
