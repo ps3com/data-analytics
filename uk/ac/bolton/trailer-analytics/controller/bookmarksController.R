@@ -6,6 +6,11 @@ bookmarksController = new.env()
 
 bookmarksController$rawBookmarks <- NULL
 bookmarksController$scrapedContent <- NULL
+bookmarksController$labels <- NULL
+
+bookmarksController$getLabels = function(){
+	return (bookmarksController$labels)
+}
 
 bookmarksController$getScrapedData = function(){	
 	bookmarksController$rawBookmarks <- bookmarksController$getBookmarks(userController$user)
@@ -16,7 +21,8 @@ bookmarksController$getScrapedData = function(){
 
 bookmarksController$getTopics = function(){
 	scraps <- bookmarksController$getScrapedData()
-    return(topicHandler$parse(scraps))
+	bookmarksController$labels <- topicHandler$parse(scraps)
+    return(bookmarksController$labels)
 }
 
 bookmarksController$getBookmarks = function(user){
