@@ -1,5 +1,5 @@
 # Startup R script for the trailer shiny app
-####t
+####
 ###############################################################################
 # clean data
 rm(list=ls())
