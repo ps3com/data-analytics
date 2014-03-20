@@ -38,6 +38,10 @@ wait = function (tDiv){
 		$('.searchTermsDataset-output').css('visibility','hidden');
 		$('#searchvisuals').css('visibility','hidden');
 	}
+	if(tDiv=="bookmarkLegend"){
+		$('.bookmarkTermsDataset-output').css('visibility','hidden');
+		$('#bookmarkvisuals').css('visibility','hidden');
+	}
 }
 
 updateSearchTerms = function(terms){
@@ -50,4 +54,3 @@ $(function() {
 	initCollapseTables("_wordcloud_bookmark");
 	initCollapseTables("_wordcloud_search");
 });
-
