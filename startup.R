@@ -1,5 +1,5 @@
 # Startup R script for the trailer shiny app
-##
+###
 ###############################################################################
 # clean data
 rm(list=ls())
@@ -12,4 +12,4 @@ setwd(paste(PATH, "/uk/ac/bolton/trailer-analytics/view/", sep=""))
 library(shiny)
 # start the shiny app
 runApp()
-####
+#####
