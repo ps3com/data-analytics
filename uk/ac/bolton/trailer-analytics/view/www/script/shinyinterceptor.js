@@ -58,8 +58,9 @@ var bookmarksOutputBinding = new Shiny.OutputBinding();
       return scope.find('.bookmarkDataset-output');
     },
     renderValue: function(el, data) {
+    	alert("PP");
     	$('.bookmarkTermsDataset-output').css('visibility','hidden');
-    	if(data=='null'){
+    	if(data=='null' || data=="[]"){
     		return;
     	}
     	// hide the previous bookmarks topics
@@ -72,8 +73,15 @@ var bookmarksOutputBinding = new Shiny.OutputBinding();
     	} 
     	
     	var bookmarks = jQuery.parseJSON(data);
+    	if(bookmarks['APPERROR']!=null){
+	  		alert(bookmarks['APPERROR']);
+	  		return;
+  		}
     	
-    	//console.log(bookmarks)
+    	//if(bookmarks['APPERROR']){
+//    		alert("found:"+bookmarks[1]);
+    	//}
+    	console.log(bookmarks)
     	
     	$.each(bookmarks, function() {
     		$desc = "";
@@ -101,7 +109,9 @@ var bookmarksOutputBinding = new Shiny.OutputBinding();
     	var m = getCollapseCode("Bookmarked locations", text, "bookmarkDataset-output");
     	
     	$(el).html(m);
+    	$('#bookmarkLegend').html("");
     	initCollapseTables("bookmarkDataset-output");
+    	$('#goBookmarkTopics').css('visibility','visible');
     	$('#bookmarkvisuals').css('visibility','hidden');
     }
   });
@@ -172,7 +182,7 @@ $.extend(searchResultsOutputBinding, {
     return scope.find('.searchResultDataset-output');
   },
   renderValue: function(el, data) {
-	//console.log("**********  search results callback");
+	  alert("*********  search results callback");
   	var bookmarks = jQuery.parseJSON(data);
   	if(bookmarks.length == 0){
   		return;

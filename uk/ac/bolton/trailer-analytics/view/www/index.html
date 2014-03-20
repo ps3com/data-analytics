@@ -19,11 +19,17 @@
 <body>
 <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;background:#f0f0f0;">
   <div  style="position: absolute; top: 0; left: 0; width: 50% ; bottom: 0; overflow: auto">
-    <div class="wfix" >          
-	  <div id="usersControl" class="shiny-html-output"></div>
-      <div style="float: right;" id="chosenUserText" class="shiny-text-output"></div>      
+    <div class="wfix" >
+		<label for="userId">Enter userId</label>
+  		<input type="text" name="userId" id="userId"/>
+  		<label for="tTag">Enter tag/topic</label>
+  		<input type="text" name="tTag" id="tTag" style="float: left"/>
+		<button onclick="wait('bookmarkLegend')" id="getBookmarks" type="button" style="float: left;" class="btn action-button">Get Bookmarks</button>
+		<div id="bookmarkLegend" style="float: left;margin-left:20px;" class="shiny-text-output"></div>
+    
       <div style="clear: left;" id="bookmarkDataset" class="bookmarkDataset-output"></div>
-      <button onclick="wait('bookmarkTermsLegend')" style="float: left;" id="goBookmarkTopics" type="button" class="btn action-button but-pad-bot">Get topics</button>
+      
+      <button onclick="wait('bookmarkTermsLegend')" style="visibility:hidden;float: left;" id="goBookmarkTopics" type="button" class="btn action-button but-pad-bot">Get topics</button>
       <div id="bookmarkTermsLegend" style="float: left;margin-left:20px;" class="shiny-text-output"></div>
       <div style="clear: left;" id="bookmarkTermsDataset" class="bookmarkTermsDataset-output"></div>
       
@@ -47,9 +53,12 @@
       <input style="float:left;" id="searchTerms" type="text" value=""/>
       <button onclick="wait('searchLegend')" id="goSearch" type="button" style="float: left;" class="btn action-button">Search</button>
       <div id="searchLegend" style="float: left;margin-left:20px;" class="shiny-text-output"></div>
-      <div style="clear: left" id="searchResultDataset" class="searchResultDataset-output"></div>
-      <button onclick="wait('searchTermsLegend')" style="visibility:hidden;float: left;" id="goSearchTopics" type="button" class="btn action-button but-pad-bot">Get topics</button>
+      
+      <div style="clear: left;" id="searchResultDataset" class="searchResultDataset-output"></div>
+      
+      <button onclick="wait('searchTermsLegend')" style="visibility:hidden;float: left;" id="goSearchTopics" type="button" class="btn action-button but-pad-bot">Get topics</button>      
       <div id="searchTermsLegend" style="float: left;margin-left:20px;" class="shiny-text-output"></div>
+      
       <div style="clear: left;" id="searchTermsDataset" class="searchTermsDataset-output"></div>
       
       <div id="searchvisuals" style="visibility:hidden;">

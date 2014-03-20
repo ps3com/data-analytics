@@ -7,64 +7,7 @@ source('../main.R', chdir=T)
 # Define server logic 
 shinyServer(function(input, output) {
 			
-			# show the chosen user in the chosenUserText div
-			output$pTitle <- renderText(	
-					as.character(properties$appTitle)
-			)			
-			
-			# setup the usersList div to contain all the users obtained from the db			
-			output$usersControl <- renderUI(				 
-					selectInput("usersList", "Choose a user:", 
-							#choices = dbHelper$getUserData()
-							choices = userController$getAllUsers()
-					)
-			)			
-			
-			# show the chosen user in the chosenUserText div
-			output$chosenUserText <- renderText(	
-					as.character(input$usersList)
-			)
-			
-			# listen for changes in the option box (created above) and react
-			#usersListInput <- reactive({	
-			#			browser()
-			#	switch(input$usersList, dbHelper$getUserData())
-			#})
-			
-			output$bookmarkDataset <- renderUI({	
-						if (!is.null(input$usersList) ) {												
-							dataSet <- bookmarksController$getBookmarks(as.character(input$usersList))
-							dataSet <- suppressWarnings(as.data.frame(sapply(dataSet, as.character)))	
-							toJSON(as.data.frame(t(dataSet)), .withNames=FALSE)
-						}else{
-							# note - returning the proper NULL object causes the usersList not to render
-							return ('null')
-						}
-					})	
-			
-			############################ Handle the web search  ##########################################
-			
-			# reactive function to check that the search button was pressed before
-			# actually doing the search
-			getSearchResults <- reactive({
-						if (input$goSearch == 0)
-							return(NULL)
-						isolate({
-									#cat(paste("<",input$searchTerms,">\n",sep=""))
-									# todo url encode values in controller
-									return (webSearchController$searchJSON(input$searchTerms))									
-								})
-					})
-			
-			output$searchResultDataset <- renderUI({
-						#cat(paste("*",input$searchTerms,"*\n",sep=""))
-						dataSet2 <- getSearchResults()
-						dataSet2 <- suppressWarnings(as.data.frame(sapply(dataSet2, as.character)))
-						toJSON(as.data.frame(t(dataSet2)), .withNames=FALSE)
-					})			
-			
-			
-			#############################################################################################
+			bookmarkButtonCount <- 0;
 			
 			############################ Handle the bookmarks scrape  ###########################################
 			
@@ -79,7 +22,7 @@ shinyServer(function(input, output) {
 								#wordcloud(topicHandler$labels, scale=c(8,.2),min.freq=1, max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
 								wordcloud(bookmarksController$getLabels(), scale=c(3,.2), min.freq=1, max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
 							})										
-						return (bookmarksController$getTopics())								
+						return (bookmarksController$getTopics())			###@@@@@					
 						})
 			})
 			
@@ -92,8 +35,83 @@ shinyServer(function(input, output) {
 					})			
 			
 			
+			#############################################################################################
+			
+			
+			############################ Handle getting bookmarks  ######################################
+			# reactive function to check that the search button was pressed before
+			# actually doing the search
+			getBookmarkResults <- reactive({
+						#if (input$getBookmarks == 0)
+						if(bookmarkButtonCount == input$getBookmarks){
+							cat(paste("A:",input$getBookmarks,bookmarkButtonCount,"\n",sep=" "))
+							return(NULL)
+						}
+						isolate({
+									bookmarkButtonCount <- input$getBookmarks
+									cat(paste("B:",input$getBookmarks,bookmarkButtonCount,"\n",sep=" "))
+									return (bookmarksController$getBookmarks(input$userId, input$tTag))									
+								})
+					})
+			
+			output$bookmarkDataset <- renderUI({
+						out <- tryCatch(
+								{
+									cat(paste("*",input$userId, ":", input$tTag,"*\n",sep=""))
+									dataSet2 <- getBookmarkResults()
+									dataSet2 <- suppressWarnings(as.data.frame(sapply(dataSet2, as.character)))
+									toJSON(as.data.frame(t(dataSet2)), .withNames=FALSE)
+								},
+								error=function(cond) {
+									eMessage <- paste("Cannot create url with args", input$userId, input$tTag, sep=" ")
+									return(paste('{"APPERROR": "',eMessage, '"}' ,sep=""))
+								},
+								warning=function(cond) {
+									message("Here's the original warning message:")
+									message(cond)
+									# Choose a return value in case of warning
+									return(NULL)
+								},
+								finally={
+									
+								}
+						)    
+						return(out)
+						
+					})						
+			
+			
+
 			
 			#############################################################################################
+			
+			
+			############################ Handle the web search  ##########################################
+			
+			# reactive function to check that the search button was pressed before
+			# actually doing the search
+			getSearchResults <- reactive({
+						if (input$goSearch == 0){
+							cat(paste("1 inputGoSearch=",input$goSearch,"*\n",sep=""))
+							return(NULL)
+						}
+						isolate({
+									cat(paste("2 inputGoSearch=",input$goSearch,"*\n",sep=""))
+									#cat(paste("<",input$searchTerms,">\n",sep=""))
+									# todo url encode values in controller
+									return (webSearchController$searchJSON(input$searchTerms))									
+								})
+					})
+			
+			output$searchResultDataset <- renderUI({
+						cat(paste("*",input$searchTerms,"*\n",sep=""))
+						dataSet2 <- getSearchResults()
+						dataSet2 <- suppressWarnings(as.data.frame(sapply(dataSet2, as.character)))
+						toJSON(as.data.frame(t(dataSet2)), .withNames=FALSE)
+					})			
+			
+			
+			#############################################################################################			
 			
 			############################ Handle the web search scrape  ###########################################
 			
@@ -116,7 +134,7 @@ shinyServer(function(input, output) {
 						dataSet2 <- suppressWarnings(as.data.frame(sapply(dataSet2, as.character)))
 						toJSON(as.data.frame(t(dataSet2)), .withNames=FALSE, container = TRUE)
 					})			
-			
+		
 		
 
 			#output$bookmarkPlot <- renderPlot({
